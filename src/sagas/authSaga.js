@@ -6,7 +6,8 @@ export const sagas = [
   loginSAGA(),
   forgotPasswordSAGA(),
   newPasswordSubmitSaga(),
-  signUpSAGA()
+  signUpSAGA(),
+  signOutSAGA()
 ];
 
 function* loginSAGA() {
@@ -89,6 +90,26 @@ function* signUp(action) {
   } catch (e) {
     console.log(e);
     yield put({ type: types.SIGN_UP_FAIL, payload: e.message });
+    yield delay(10000);
+    yield put({ type: types.CLEAR_ERROR });
+  }
+}
+
+function* signOutSAGA() {
+  yield takeLatest(types.SIGN_UP_REQUEST_SAGA, signUp);
+}
+
+function* signOut(action) {
+  try {
+    yield put({ type: types.LOGOUT_REQUEST });
+    yield call(AmplifyService.signUp, username, password, name, locale);
+    yield put({
+      type: types.LOGOUT_SUCCESS
+    });
+    yield call(NavigationService.navigate, "SCREEN_NAME");
+  } catch (e) {
+    console.log(e);
+    yield put({ type: types.LOGOUT_FAIL, payload: e.message });
     yield delay(10000);
     yield put({ type: types.CLEAR_ERROR });
   }

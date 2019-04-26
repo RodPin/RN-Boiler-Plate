@@ -1,8 +1,6 @@
 import produce from "immer";
 
 export const types = {
-  TESTME_SAGA: "Auth/TESTME_SAGA",
-
   LOGIN_REQUEST_SAGA: "Auth/LOGIN_REQUEST_SAGA",
   LOGIN_REQUEST: "Auth/LOGIN_REQUEST",
   LOGIN_SUCCESS: "Auth/LOGIN_SUCCESS",
@@ -25,6 +23,7 @@ export const types = {
 
   CLEAR_ERROR: "Auth/CLEAR_ERROR",
 
+  LOGOUT_REQUEST_SAGA: "Auth/LOGOUT_REQUEST_SAGA",
   LOGOUT_REQUEST: "Auth/LOGOUT_REQUEST",
   LOGOUT_SUCCESS: "Auth/LOGOUT_SUCCESS"
 };
@@ -89,34 +88,25 @@ export default produce((draft, action) => {
 }, initialState);
 
 export const actions = {
-  submitLoginWithAwsCognito: action => ({
+  submitLogin: action => ({
     type: types.LOGIN_REQUEST_SAGA,
     payload: action
   }),
-  testme: () => ({ type: types.TESTME_SAGA }),
-  forgotPasswordWithAwsCognito: action => ({
+
+  forgotPassword: action => ({
     type: types.FORGOT_PASSWORD_REQUEST_SAGA,
     payload: action
   }),
-  newPasswordSubmitWithAwsCognito: action => ({
+  newPassword: action => ({
     type: types.NEW_PASSWORD_SUBMIT_REQUEST_SAGA,
     payload: action
   }),
   signUp: action => ({
     type: types.SIGN_UP_REQUEST_SAGA,
     payload: action
+  }),
+  signOut: action => ({
+    type: types.LOGOUT_REQUEST_SAGA,
+    payload: action
   })
 };
-
-export function signOut() {
-  return dispatch => {
-    dispatch({
-      type: LOGOUT_REQUEST
-    });
-    AmplifyService.signOut().then(res => {
-      dispatch({
-        type: LOGOUT_SUCCESS
-      });
-    });
-  };
-}
